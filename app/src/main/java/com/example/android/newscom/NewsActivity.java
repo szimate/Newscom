@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,14 +26,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
      * URL for news data from the Guardian API
      */
     private static final String GUARDIANAPI_REQUEST_URL =
-            "http://content.guardianapis.com/search?q=debates&api-key=test";
+            "http://content.guardianapis.com/search?order-by=newest&show-tags=contributor&page-size=20&q=politics&api-key=test";
 
     /**
      * Constant value for the news loader ID.
      */
     private static final int NEWS_LOADER_ID = 1;
 
-    private Context context;
     /**
      * RecyclerView to view the news
      */
@@ -91,7 +89,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         if (networkInfo != null && networkInfo.isConnected()) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getLoaderManager();
-            Log.i(LOG_TAG, "Test:Earthquake initLoader() called");
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
