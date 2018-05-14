@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
-
-    private static final String LOG_TAG = NewsActivity.class.getName();
 
     /**
      * URL for news data from the Guardian API
@@ -59,13 +56,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         setContentView(R.layout.activity_news);
 
         // Find a reference to the {@link TextView} in the layout
-        emptyView = (TextView) findViewById(R.id.empty_view);
+        emptyView = findViewById(R.id.empty_view);
 
         // Find a reference to the {@link ProgressBar} in the layout
-        loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+        loadingIndicator = findViewById(R.id.loading_indicator);
 
         // Find a reference to the {@link RecyclerView} in the layout
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
         // Use a {@link LinearLayoutManager} for the {@link RecyclerView}
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -85,8 +82,10 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         // Get details on the currently active default data network
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
+        boolean isConnected = networkInfo != null && networkInfo.isConnectedOrConnecting();
+
         // If there is a network connection, fetch data
-        if (networkInfo != null && networkInfo.isConnected()) {
+        if (isConnected) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getLoaderManager();
 
@@ -94,6 +93,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(NEWS_LOADER_ID, null, this);
+
         } else {
             View loadingIndicator = findViewById(R.id.loading_indicator);
 
@@ -117,11 +117,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     public void onLoadFinished(Loader<List<News>> loader, List<News> newsItems) {
         // Hide loading indicator because the data has been loaded
         loadingIndicator.setVisibility(View.GONE);
+        // Set empty state text to display "No news items found."
+        emptyView.setText(R.string.no_data_available);
 
-        if (newsItems.isEmpty()) {
-            // Set empty state text to display "No news items found."
-            emptyView.setText(R.string.no_data_available);
-        } else {
+
+        // If there is a valid list of {@link News}, then add them to the adapter's
+        // data set. This will trigger the RecyclerView to update.
+        if (newsItems != null && !newsItems.isEmpty()) {
             adapter = new NewsAdapter(this, newsItems);
             recyclerView.setAdapter(adapter);
         }

@@ -164,22 +164,25 @@ public class QueryUtils {
                 JSONObject currentNewsItem = newsArray.getJSONObject(i);
 
                 // Extract the value for title and author (if provided).
-                String title = "";
-                String author = "";
-                String webTitle = currentNewsItem.getString("webTitle");
-                if (webTitle.contains("|")) {
-                    String[] parts = webTitle.split("[|]");
-                    title += parts[0].trim();
-                    author += parts[1].trim();
-                } else {
-                    title += webTitle;
-                }
+                String title = currentNewsItem.getString("webTitle");
 
                 // Extract the value for section.
                 String section = currentNewsItem.getString("sectionName");
 
                 //Extract the value for url.
                 String url = currentNewsItem.getString("webUrl");
+
+                String author = null;
+                if (currentNewsItem.has("tags")) {
+                    // Extract the JSONArray associated with the key called "tags"
+                    JSONArray tagsArray = currentNewsItem.getJSONArray("tags");
+                    if (tagsArray.length() != 0) {
+                        // Extract the first JSONObject in the tagsArray
+                        JSONObject tagsItem = tagsArray.getJSONObject(0);
+                        // Extract the value for the key called "webTitle"
+                        author = tagsItem.getString("webTitle");
+                    }
+                }
 
                 // Extract the value for the key called "thumbnail" if there are any dates.
                 String dateString = "";
