@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/title_home" />
+        <item
+            android:id="@+id/nav_world"
+            android:icon="@drawable/ic_world"
+            android:title="@string/title_world" />
+        <item
+            android:id="@+id/nav_science"
+            android:icon="@drawable/ic_sport"
+            android:title="@string/title_science" />
+        <item
+            android:id="@+id/nav_sport"
+            android:icon="@drawable/ic_sport"
+            android:title="@string/title_sport" />
+        <item
+            android:id="@+id/nav_environment"
+            android:icon="@drawable/ic_environment"
+            android:title="@string/title_environment" />
+        <item
+            android:id="@+id/nav_business"
+            android:icon="@drawable/ic_business"
+            android:title="@string/title_business" />
+    </group>
+
+</menu>
