@@ -75,6 +75,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         return newsItems.size();
     }
 
+    public void clear() {
+        final int size = newsItems.size();
+        newsItems.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
     static class NewsViewHolder extends RecyclerView.ViewHolder {
 
         ConstraintLayout container;

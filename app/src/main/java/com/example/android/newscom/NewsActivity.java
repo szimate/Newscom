@@ -3,33 +3,52 @@ package com.example.android.newscom;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.support.v7.app.ActionBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
+public class NewsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        LoaderCallbacks<List<News>> {
 
     /**
      * URL for news data from the Guardian API
      */
     private static final String GUARDIANAPI_REQUEST_URL =
-            "http://content.guardianapis.com/search?order-by=newest&show-tags=contributor&page-size=20&q=politics&api-key=test";
+            "http://content.guardianapis.com/search";
 
     /**
      * Constant value for the news loader ID.
      */
     private static final int NEWS_LOADER_ID = 1;
 
+    /**
+     * DrawerLayout to view the news sections in the menu
+     */
+    private DrawerLayout drawerLayout;
     /**
      * RecyclerView to view the news
      */
@@ -45,6 +64,8 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
      */
     private TextView emptyView;
 
+    private Toolbar toolbar;
+
     /**
      * View for the loading indicator
      */
@@ -53,7 +74,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
+        setContentView(R.layout.activity_main);
 
         // Find a reference to the {@link TextView} in the layout
         emptyView = findViewById(R.id.empty_view);
@@ -63,6 +84,35 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         // Find a reference to the {@link RecyclerView} in the layout
         recyclerView = findViewById(R.id.recycler_view);
+
+        // Find a reference to the {@link Toolbar} in the layout
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        // Find a reference to the {@link DrawerLayout} in the layout
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
+        // Set gravity for tab bar
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+
+                        return true;
+                    }
+                }
+        );
 
         // Use a {@link LinearLayoutManager} for the {@link RecyclerView}
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -105,12 +155,32 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
             emptyView.setText(R.string.no_internet_connection);
         }
 
-
     }
 
     @Override
+    // onCreateLoader insanities and returns a new Loader for the given ID
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-        return new NewsLoader(this, GUARDIANAPI_REQUEST_URL);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // getString retrieves a String value from rhe preferences. The second parameter is the default value for this preference
+        String limitItems = sharedPreferences.getString(getString(R.string.settings_number_of_news_key), getString(R.string.settings_number_of_news_default));
+
+        String orderBy = sharedPreferences.getString(getString(R.string.settings_order_by_key), getString(R.string.settings_number_of_news_default));
+        // parse breaks apart the URI string that' s passed into its parameter
+        Uri baseUri = Uri.parse(GUARDIANAPI_REQUEST_URL);
+
+        // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("format", "json");
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("page-size", limitItems);
+        uriBuilder.appendQueryParameter("q", "economy");
+        uriBuilder.appendQueryParameter("api-key", "test");
+
+        return new NewsLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -118,7 +188,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         // Hide loading indicator because the data has been loaded
         loadingIndicator.setVisibility(View.GONE);
         // Set empty state text to display "No news items found."
-        emptyView.setText(R.string.no_data_available);
 
 
         // If there is a valid list of {@link News}, then add them to the adapter's
@@ -126,13 +195,47 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         if (newsItems != null && !newsItems.isEmpty()) {
             adapter = new NewsAdapter(this, newsItems);
             recyclerView.setAdapter(adapter);
+        } else {
+            emptyView.setText(R.string.no_data_available);
         }
 
     }
 
     @Override
     public void onLoaderReset(Loader<List<News>> loader) {
+    }
 
+    @Override
+    //This method initialize the contents of the Activity's option menu.
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the Options Menu we specified in XML
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
+    @Override
+    // This method is called whenever an item in the options menu is selected.
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.string.title_home:
+                Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
+            default:
+                Toast.makeText(getApplicationContext(), "else", Toast.LENGTH_SHORT).show();
+
+                return true;
+        }
     }
 }

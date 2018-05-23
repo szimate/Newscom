@@ -8,4 +8,45 @@
     <string name="no_internet_connection">No internet connection.</string>
     <string name="no_data_available"> Currently there are no stories for you. You can always come later and check for all new stories.</string>
 
+    <string name="action_settings">News Settings</string>
+
+    <string name="settings_order_by_newest_label">Newest</string>
+    <string name="settings_order_by_newest_value" translatable="false">newest</string>
+
+    <string name="settings_order_by_oldest_label">Oldest</string>
+    <string name="settings_order_by_oldest_value" translatable="false">oldest</string>
+
+    <string name="settings_order_by_relevance_label">Relevance</string>
+    <string name="settings_order_by_relevance_value" translatable="false">relevance</string>
+
+    <string name="num_between">Between 1 "-" 50</string>
+
+    <string name="settings_number_of_news_key" translatable="false">news_number</string>
+    <string name="settings_number_of_news_label">News/page</string>
+    <string name="settings_number_of_news_default" translatable="false">10</string>
+
+    <string name="settings_order_by_key" translatable="false">order_by</string>
+    <string name="settings_order_by_label">Order By</string>
+    <string name="settings_order_by_default" translatable="false">@string/settings_order_by_newest_value</string>
+
+    <!-- Label for order-by time option [CHAR LIMIT=20] -->
+    <string name="settings_order_by_time_label">Time</string>
+    <string name="settings_order_by_time_value" translatable="false">time</string>
+
+    <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
+    <string name="settings_order_by_topic_label">Topic</string>
+    <string name="settings_order_by_topic_value" translatable="false">topic</string>
+
+    <!--naw items-->
+    <string name="title_home">Home</string>
+    <string name="title_world">World</string>
+    <string name="title_science">Science</string>
+    <string name="title_sport">Sport</string>
+    <string name="title_environment">Environment</string>
+    <string name="title_business">Business</string>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>
