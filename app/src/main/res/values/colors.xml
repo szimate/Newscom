@@ -7,4 +7,7 @@
     <color name="blue">#692376bf</color>
     <color name="light_blue">#66609CF7</color>
     <color name="black">#000000</color>
+    <color name="color_app_bar_text">#005689</color>
+    <color name="thewhite">#ffffff</color>
+
 </resources>

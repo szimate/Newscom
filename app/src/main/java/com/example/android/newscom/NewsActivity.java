@@ -13,20 +13,19 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.app.ActionBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +63,6 @@ public class NewsActivity extends AppCompatActivity implements NavigationView.On
      */
     private TextView emptyView;
 
-    private Toolbar toolbar;
-
     /**
      * View for the loading indicator
      */
@@ -76,6 +73,22 @@ public class NewsActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Find a reference to the {@link Toolbar} in the layout
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Find a reference to the {@link DrawerLayout} in the layout
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+//        ActionBar actionBar = getSupportActionBar();
+//        assert actionBar != null;
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
         // Find a reference to the {@link TextView} in the layout
         emptyView = findViewById(R.id.empty_view);
 
@@ -85,34 +98,8 @@ public class NewsActivity extends AppCompatActivity implements NavigationView.On
         // Find a reference to the {@link RecyclerView} in the layout
         recyclerView = findViewById(R.id.recycler_view);
 
-        // Find a reference to the {@link Toolbar} in the layout
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-        // Find a reference to the {@link DrawerLayout} in the layout
-        drawerLayout = findViewById(R.id.drawer_layout);
-
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
-        // Set gravity for tab bar
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        item.setChecked(true);
-                        drawerLayout.closeDrawers();
-
-                        return true;
-                    }
-                }
-        );
+        navigationView.setNavigationItemSelectedListener(this);
 
         // Use a {@link LinearLayoutManager} for the {@link RecyclerView}
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

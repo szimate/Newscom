@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar">
 
@@ -11,7 +11,6 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
         android:scrollbars="vertical"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,8 +24,7 @@
         android:textAppearance="?android:textAppearanceMedium"
         app:layout_constraintBottom_toBottomOf="@+id/loading_indicator"
         app:layout_constraintEnd_toEndOf="@+id/recycler_view"
-        app:layout_constraintStart_toStartOf="@+id/recycler_view"
-        />
+        app:layout_constraintStart_toStartOf="@+id/recycler_view" />
 
     <!-- Loading indicator for user feedback between queries to Guardian API -->
     <ProgressBar

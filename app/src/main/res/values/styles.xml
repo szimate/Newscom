@@ -6,7 +6,45 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- Change Action Bar title text color  -->
+        <item name="titleTextColor">@color/thewhite</item>
+        <item name="subtitleTextColor">@color/thewhite</item>
+
+        <!-- Set Navigation drawer icon color-->
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+        <!-- Change Action Bar overflow icon (Options Menu button) color -->
+        <item name="actionOverflowButtonStyle">@style/MyOverflowButtonStyle</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Theme of the settings -->
+    <style name="SettingsTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <!-- Set Navigation drawer icon color -->
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/thewhite</item>
+    </style>
+
+    <!-- Change Action Bar overflow icon (Options Menu button) color -->
+    <style name="MyOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/thewhite</item>
+    </style>
+
 
     <style name="main">
         <item name="android:layout_height">wrap_content</item>
@@ -58,9 +96,5 @@
         <item name="android:textStyle">bold</item>
         <item name="android:text">@string/section</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>
