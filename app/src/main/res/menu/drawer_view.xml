@@ -11,7 +11,7 @@
             android:title="@string/title_world" />
         <item
             android:id="@+id/nav_science"
-            android:icon="@drawable/ic_sport"
+            android:icon="@drawable/ic_school"
             android:title="@string/title_science" />
         <item
             android:id="@+id/nav_sport"

@@ -33,10 +33,6 @@
     <string name="settings_order_by_time_label">Time</string>
     <string name="settings_order_by_time_value" translatable="false">time</string>
 
-    <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
-    <string name="settings_order_by_topic_label">Topic</string>
-    <string name="settings_order_by_topic_value" translatable="false">topic</string>
-
     <!--naw items-->
     <string name="title_home">Home</string>
     <string name="title_world">World</string>
@@ -47,4 +43,5 @@
 
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
+
 </resources>

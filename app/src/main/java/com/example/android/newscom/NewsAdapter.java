@@ -23,6 +23,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     private List<News> newsItems;
     private Context context;
 
+    /**
+     * Constructs a new {@link NewsAdapter}
+     *
+     * @param context   of the app
+     * @param newsItems is the list of news, which is the data source of the adapter
+     */
     public NewsAdapter(Context context, List<News> newsItems) {
         this.newsItems = newsItems;
         this.context = context;
@@ -75,10 +81,23 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         return newsItems.size();
     }
 
-    public void clear() {
-        final int size = newsItems.size();
+    /**
+     * Clear all data (a list of {@link News} objects)
+     */
+    public void clearAll() {
         newsItems.clear();
-        notifyItemRangeRemoved(0, size);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Add  a list of {@link News}
+     *
+     * @param newsList is the list of news, which is the data source of the adapter
+     */
+    public void addAll(List<News> newsList) {
+        newsItems.clear();
+        newsItems.addAll(newsList);
+        notifyDataSetChanged();
     }
 
     static class NewsViewHolder extends RecyclerView.ViewHolder {

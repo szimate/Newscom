@@ -2,10 +2,9 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#a4fa7000</color>
+    <color name="colorOrange">#b1e68e41</color>
     <color name="white">#48bfb4b4</color>
-    <color name="blue">#692376bf</color>
-    <color name="light_blue">#66609CF7</color>
     <color name="black">#000000</color>
     <color name="color_app_bar_text">#005689</color>
     <color name="thewhite">#ffffff</color>
